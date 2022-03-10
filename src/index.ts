@@ -9,37 +9,38 @@
 // image to be used throughout your site, the API you create will handle 
 // resizing and serving stored images for you
 
+// How can we initalize a project with Node.js?
+// What dependencies should be included to improve development?
+// How do you write asynchronous functions in TypeScript?
+// How do you access a file in the file system?
+// What tool do you use for endpoint testing?
+
 import express from 'express';
 import { promises as fsPromises } from 'fs';
 import routes from './routes/index';
 
-const generatePlaceholderImage = require('generate-placeholder-image')
-
 const app = express();
 const port = 3000;
 
-const inputFile = './images/full/cock_head_titled.jpg';
-const outputFile = './images/thumbnail/cock_head_titled.jpg';
+// const inputFile = './assets/cock_head_titled.jpg';
+// const outputFile = './assets/thumbnail/cock_head_titled.jpg';
 
 //app.use('/', routes);
 // Define a route handler
 app.get('/api', (req, res) => {
     res.send("converting thumbnail in process!");
-    generatePlaceholderImage()
-    .fromFile(inputFile)
-    .then ( (data) => {
-        let newImg = data.map ( (item: {
-            generatePlaceholderImage({
-               let width = item.width;
-                let height = item.height;
-                 output: '/src/images/thumbnail/cock_head_titled.jpg'
-            });
-            return { width, height};
-        });
-            
+    fsPromises.readFile('.src/assets/cock_head_titled.jpg') // Use fsPromises.readFile() method to read the file 
     
-        fsPromises.writeFile(outputFile, (newImg));
-
+    .then(function(result) {
+        res.writeHead(200, {'Content-Type':'image/jpg'})
+            console.log(""+result);
+        })
+        .catch(function(error) {
+            console.log(error);
+        })
+        
+    })
+   
 
 app.listen(port, () => {
     console.log(`Server Started on port ${port}`)
